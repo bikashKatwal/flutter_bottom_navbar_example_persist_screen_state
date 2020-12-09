@@ -28,9 +28,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedPage = 0;
+  int currentTab = 0;
 
   List<Widget> pageList = List<Widget>();
+  final PageStorageBucket _bucket = PageStorageBucket();
 
   @override
   void initState() {
@@ -41,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onItemTapped(int index) {
-    _selectedPage = index;
+    currentTab = index;
     setState(() {});
   }
 
@@ -51,13 +52,13 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: IndexedStack(
-          index: _selectedPage,
-          children: pageList,
+        body: PageStorage(
+          child: pageList[currentTab],
+          bucket: _bucket,
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          currentIndex: _selectedPage,
+          currentIndex: currentTab,
           onTap: _onItemTapped,
           items: [
             BottomNavigationBarItem(
