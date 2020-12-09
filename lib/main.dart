@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 
 void main() {
   runApp(MyApp());
@@ -62,32 +63,44 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: PageView(
-            children: pageList,
-            controller: pageController,
-            onPageChanged: onPageChanged),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: currentTab,
-          onTap: _onItemTapped,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              label: 'Feed',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Setting',
-            ),
-          ],
-        ));
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: PageView(
+          children: pageList,
+          controller: pageController,
+          onPageChanged: onPageChanged),
+      bottomNavigationBar: ConvexAppBar(
+        backgroundColor: Colors.red,
+        style: TabStyle.react,
+        items: [
+          TabItem(icon: Icons.home, title: 'Home'),
+          TabItem(icon: Icons.map, title: 'Discovery'),
+          TabItem(icon: Icons.add, title: 'Add'),
+        ],
+        initialActiveIndex: 2, //optional, default as 0
+        onTap: (int i) => _onItemTapped(i),
+      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   type: BottomNavigationBarType.fixed,
+      //   currentIndex: currentTab,
+      //   onTap: _onItemTapped,
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home),
+      //       label: 'Home',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.people),
+      //       label: 'Feed',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.settings),
+      //       label: 'Setting',
+      //     ),
+      //   ],
+      // ),
+    );
   }
 }
 
@@ -135,7 +148,11 @@ class _IncrementStateState extends State<IncrementState>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(_counter.toString(), style: TextStyle(fontSize: 24.0))
+            Text(_counter.toString(), style: TextStyle(fontSize: 24.0)),
+            RaisedButton.icon(
+                onPressed: () {},
+                icon: Icon(Icons.assistant_navigation),
+                label: Text("Navigate"))
           ],
         ),
       ),
