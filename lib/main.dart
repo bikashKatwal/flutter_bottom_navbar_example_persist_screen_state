@@ -31,17 +31,30 @@ class _MyHomePageState extends State<MyHomePage> {
   int currentTab = 0;
 
   List<Widget> pageList = List<Widget>();
-  final PageStorageBucket _bucket = PageStorageBucket();
+  PageController pageController;
 
   @override
   void initState() {
     super.initState();
+    pageController = PageController();
     pageList.add(ColorBoxPage(key: PageStorageKey('pageOne')));
-    pageList.add(ColorBoxPage(key: PageStorageKey('pageTwo')));
+    pageList.add(IncrementState());
     pageList.add(ColorBoxPage(key: PageStorageKey('pageThree')));
   }
 
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
   void _onItemTapped(int index) {
+    currentTab = index;
+    setState(() {});
+    pageController.jumpToPage(currentTab);
+  }
+
+  void onPageChanged(int index) {
     currentTab = index;
     setState(() {});
   }
@@ -52,10 +65,10 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: PageStorage(
-          child: pageList[currentTab],
-          bucket: _bucket,
-        ),
+        body: PageView(
+            children: pageList,
+            controller: pageController,
+            onPageChanged: onPageChanged),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: currentTab,
@@ -98,4 +111,41 @@ class ColorBoxPage extends StatelessWidget {
       ),
     );
   }
+}
+
+class IncrementState extends StatefulWidget {
+  @override
+  _IncrementStateState createState() => _IncrementStateState();
+}
+
+class _IncrementStateState extends State<IncrementState>
+    with AutomaticKeepAliveClientMixin {
+  int _counter = 0;
+
+  void increment() {
+    _counter++;
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(_counter.toString(), style: TextStyle(fontSize: 24.0))
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: increment,
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }
