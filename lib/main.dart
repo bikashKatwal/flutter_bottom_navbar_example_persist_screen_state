@@ -73,6 +73,10 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: ConvexAppBar(
         backgroundColor: Colors.red,
         style: TabStyle.react,
+        // cornerRadius: 10.0,
+        top: -15.0,
+        elevation: 5.0,
+        curveSize: 50,
         items: [
           TabItem(icon: Icons.home, title: 'Home'),
           TabItem(icon: Icons.map, title: 'Discovery'),
